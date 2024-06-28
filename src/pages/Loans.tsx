@@ -74,6 +74,7 @@ export default function Loans() {
                   <TableCell align="right">Amount</TableCell>
                   <TableCell align="right">Interest Rate</TableCell>
                   <TableCell align="right">Terms&nbsp;(month)</TableCell>
+                  <TableCell align="right">Current Payment</TableCell>
                   <TableCell align="right">Minimum Payment</TableCell>
                   <TableCell align="right">Action</TableCell>
                 </TableRow>
@@ -95,6 +96,9 @@ export default function Loans() {
                       </TableCell>
                       <TableCell align="right">{loan.interestRate}%</TableCell>
                       <TableCell align="right">{loan.term}</TableCell>
+                      <TableCell align="right">
+                        {moneyFormatter.format(loan.currentPayment ?? 0)}
+                      </TableCell>
                       <TableCell align="right">
                         {moneyFormatter.format(loan.minimumPayment)}
                       </TableCell>

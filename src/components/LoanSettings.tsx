@@ -51,7 +51,7 @@ export default function LoanSettings({
       interestRate: loan?.interestRate ?? 0,
       term: loan?.term ?? 60,
       minimumPayment: loan?.minimumPayment ?? 0,
-      currentPayment: undefined,
+      currentPayment: loan?.currentPayment,
     },
   });
 

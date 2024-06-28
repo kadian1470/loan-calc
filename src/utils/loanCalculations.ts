@@ -82,8 +82,21 @@ export const calculateAmortizationScheduleWithOverridePayment = ({
   let balance = principal;
   let month = 1;
   const schedule: AmortizationScheduleEntry[] = [];
-  while (balance > 0 || month <= numberOfPayments) {
+  while (balance > 0 && month <= numberOfPayments) {
     const interest = roundToTwoDecimals(balance * monthlyInterestRate);
+    // To avoid round into neg this was overriden
+    if (balance < monthlyPayment) {
+      const internalPayment = roundToTwoDecimals(balance + interest);
+      schedule.push({
+        month: month,
+        payment: internalPayment,
+        principal: roundToTwoDecimals(balance),
+        interest: interest,
+        balance: 0,
+      });
+      break;
+    }
+
     const principalPayment = roundToTwoDecimals(monthlyPayment - interest);
     balance = roundToTwoDecimals(balance - principalPayment);
 
@@ -92,7 +105,7 @@ export const calculateAmortizationScheduleWithOverridePayment = ({
       payment: roundToTwoDecimals(monthlyPayment),
       principal: principalPayment,
       interest: interest,
-      balance: balance,
+      balance: balance < 0 ? 0 : balance,
     });
     month += 1;
   }
