@@ -1,7 +1,22 @@
 export type LoanActionType = "init" | "addLoan" | "updateLoan" | "deleteLoan";
-export type LoanAction = {
-  type: "addLoan" | "updateLoan" | "deleteLoan";
-  value: Loan;
+export type LoanAction =
+  | {
+      type: "addLoan" | "updateLoan" | "deleteLoan";
+      value: Loan;
+    }
+  | { type: "updateUser"; value: string };
+
+export const initialLoanState = (username: string): Loan[] => {
+  const storeData = localStorage.getItem(`${username}-loans`);
+  if (storeData) {
+    try {
+      const parseData = JSON.parse(storeData) as LoansState;
+      return parseData.loans;
+    } catch {
+      console.warn("failed to load loan info");
+    }
+  }
+  return [];
 };
 
 export type Loan = Readonly<{
@@ -23,6 +38,12 @@ export const loanReducer = (
   action: LoanAction
 ): LoansState => {
   switch (action.type) {
+    case "updateUser": {
+      return {
+        loans: initialLoanState(action.value),
+        username: action.value,
+      };
+    }
     case "addLoan": {
       const newState = {
         ...state,

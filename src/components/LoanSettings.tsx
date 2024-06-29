@@ -1,7 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -10,6 +8,9 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 import { Controller, useForm } from "react-hook-form";
 import { number, object, string } from "yup";
 import { Loan } from "../utils/loanReducer";
+import DialogFooter from "./DialogFooter";
+
+const loanFormId = "loan-form";
 
 type LoanSettingsProps = Readonly<{
   loan?: Loan;
@@ -64,7 +65,7 @@ export default function LoanSettings({
       <Dialog open onClose={onClose}>
         <DialogTitle>Loan Settings</DialogTitle>
         <DialogContent>
-          <form onSubmit={handleSubmit(submit)} id="loan-form">
+          <form onSubmit={handleSubmit(submit)} id={loanFormId}>
             <Grid2 container xs={12} spacing={2} py={1}>
               <Grid2 xs={12}>
                 <Controller
@@ -187,19 +188,11 @@ export default function LoanSettings({
             </Grid2>
           </form>
         </DialogContent>
-        <DialogActions>
-          <Button variant="outlined" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            form="loan-form"
-            variant="contained"
-            disabled={!isDirty || isSubmitting}
-          >
-            Save
-          </Button>
-        </DialogActions>
+        <DialogFooter
+          form={loanFormId}
+          onClose={onClose}
+          disabled={isDirty || isSubmitting}
+        />
       </Dialog>
     </>
   );

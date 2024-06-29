@@ -46,7 +46,6 @@ export default function LoanSchedule({ loan }: LoanScheduleProps) {
     if (paymentType === "current" && loan.currentPayment) {
       payment = loan.currentPayment;
     }
-    console.log(payment);
 
     return calculateAmortizationScheduleWithOverridePayment({
       principal: loan.principal,
@@ -57,8 +56,8 @@ export default function LoanSchedule({ loan }: LoanScheduleProps) {
   }, [loan, paymentType, useTerm]);
 
   return (
-    <Grid2 container>
-      <Grid2>
+    <Grid2 container sx={{ width: "100%" }} gap={2} alignContent="center">
+      <Grid2 xs={2}>
         <Dropdown
           id="payment-type"
           label="Payment type"
@@ -68,6 +67,8 @@ export default function LoanSchedule({ loan }: LoanScheduleProps) {
           }}
           options={paymentOptions}
         />
+      </Grid2>
+      <Grid2 xs={2} alignSelf="center">
         <FormControlLabel
           label="Use Term"
           control={

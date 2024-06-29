@@ -7,36 +7,39 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import { useReducer, useState } from "react";
+import { useMemo, useReducer, useState } from "react";
+import Dropdown from "../components/Dropdown";
 import LoanSchedule from "../components/LoanSchedule";
 import LoanSettings from "../components/LoanSettings";
+import UserModal from "../components/UserModal";
+import useCreateUser from "../hooks/useCreateUser";
+import useUsers from "../hooks/useUsers";
 import MainLayout from "../layouts/MainLayout";
 import { moneyFormatter } from "../utils/loanCalculations";
-import { Loan, LoansState, loanReducer } from "../utils/loanReducer";
+import { Loan, initialLoanState, loanReducer } from "../utils/loanReducer";
 
-type ModalType = "add" | "edit" | "delete" | null;
-
-const initialState = (username: string): Loan[] => {
-  const storeData = localStorage.getItem(`${username}-loans`);
-  if (storeData) {
-    try {
-      const parseData = JSON.parse(storeData) as LoansState;
-      return parseData.loans;
-    } catch {
-      console.warn("failed to load loan info");
-    }
-  }
-  return [];
-};
+type ModalType = "add" | "edit" | "delete" | "user-add" | null;
 
 export default function Loans() {
-  console.log("render");
   const [state, dispatch] = useReducer(loanReducer, {
     username: "lucas",
-    loans: initialState("lucas"),
+    loans: initialLoanState("lucas"),
   });
+  const { mutateAsync: createUser } = useCreateUser();
   const [modalOpen, setModalOpen] = useState<ModalType>(null);
   const [selectedLoan, setSelectedLoan] = useState<Loan | null>(null);
+
+  const { data: users } = useUsers();
+  const userOptions = useMemo(() => {
+    return (
+      users?.results.map((user) => {
+        return {
+          text: user.name,
+          value: user.name,
+        };
+      }) ?? []
+    );
+  }, [users]);
 
   return (
     <MainLayout
@@ -50,6 +53,14 @@ export default function Loans() {
             }}
           >
             Add Loan
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setModalOpen("user-add");
+            }}
+          >
+            Add user
           </Button>
           {modalOpen === "add" && (
             <LoanSettings
@@ -65,6 +76,17 @@ export default function Loans() {
       }
     >
       <Grid2 container gap={2}>
+        <Grid2 xs={12}>
+          <Dropdown
+            id="user"
+            label="User"
+            value={state.username}
+            onChange={(newValue: string) => {
+              dispatch({ type: "updateUser", value: newValue });
+            }}
+            options={userOptions}
+          />
+        </Grid2>
         <Grid2 xs={12}>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -129,6 +151,16 @@ export default function Loans() {
             }}
             onSubmit={(data) => {
               dispatch({ type: "addLoan", value: data });
+            }}
+          />
+        )}
+        {modalOpen === "user-add" && (
+          <UserModal
+            onClose={() => {
+              setModalOpen(null);
+            }}
+            onSubmit={async (data) => {
+              await createUser(data);
             }}
           />
         )}
