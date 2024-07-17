@@ -26,7 +26,6 @@ const MainPanel = styled("div", {
   height: ${isMobile ? `calc(100vh - 56px)` : "100vh"};
   background-color: ${theme.palette.grey[100]};
   overflow-y: auto;
-  margin: 8px;
 `
 );
 

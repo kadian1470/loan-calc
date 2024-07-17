@@ -9,9 +9,10 @@ import TableRow from "@mui/material/TableRow";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { useMemo, useReducer, useState } from "react";
 import Dropdown from "../components/Dropdown";
-import LoanSchedule from "../components/LoanSchedule";
-import LoanSettings from "../components/LoanSettings";
 import UserModal from "../components/UserModal";
+import LoanSettings from "../components/loans/LoanSettings";
+import LoanTabs from "../components/loans/LoanTabs";
+import { useLoanOptionsContext } from "../context/LoanOptionsContext";
 import useCreateUser from "../hooks/useCreateUser";
 import useUsers from "../hooks/useUsers";
 import MainLayout from "../layouts/MainLayout";
@@ -25,9 +26,9 @@ export default function Loans() {
     username: "lucas",
     loans: initialLoanState("lucas"),
   });
+  const { selectedLoan, setSelectedLoan } = useLoanOptionsContext();
   const { mutateAsync: createUser } = useCreateUser();
   const [modalOpen, setModalOpen] = useState<ModalType>(null);
-  const [selectedLoan, setSelectedLoan] = useState<Loan | null>(null);
 
   const { data: users } = useUsers();
   const userOptions = useMemo(() => {
@@ -106,7 +107,9 @@ export default function Loans() {
                   return (
                     <TableRow
                       key={loan.id}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                      sx={{
+                        "&:last-child td, &:last-child th": { border: 0 },
+                      }}
                       onClick={() => {
                         setSelectedLoan(loan);
                       }}
@@ -141,8 +144,7 @@ export default function Loans() {
             </Table>
           </TableContainer>
         </Grid2>
-        {selectedLoan && <LoanSchedule loan={selectedLoan} />}
-
+        <LoanTabs loans={state.loans} />
         {modalOpen === "edit" && selectedLoan && (
           <LoanSettings
             loan={selectedLoan}

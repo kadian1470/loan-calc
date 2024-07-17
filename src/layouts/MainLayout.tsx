@@ -14,6 +14,8 @@ const MainContainer = styled("div")`
   flex-direction: column;
   height: 100%;
   width: 100%;
+  margin-left: 1rem;
+  margin-right: 1rem;
 `;
 
 const Header = styled(Box, {
@@ -22,7 +24,6 @@ const Header = styled(Box, {
   display: "flex",
   margin: isMobile ? theme.spacing(2.25, 1) : theme.spacing(2.5, 0),
   justifyContent: "space-between",
-  minHeight: "46px",
 }));
 
 const LeftPanel = styled(Box)`

@@ -7,8 +7,8 @@ import TextField from "@mui/material/TextField";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { Controller, useForm } from "react-hook-form";
 import { number, object, string } from "yup";
-import { Loan } from "../utils/loanReducer";
-import DialogFooter from "./DialogFooter";
+import { Loan } from "../../utils/loanReducer";
+import DialogFooter from "../DialogFooter";
 
 const loanFormId = "loan-form";
 
