@@ -1,3 +1,6 @@
+import Box from "@mui/material/Box";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
 import { useMemo, useState } from "react";
 import { useLoanOptionsContext } from "../../context/LoanOptionsContext";
 import {
@@ -14,7 +17,7 @@ export type LoanScheduleProps = Readonly<{
 }>;
 
 export default function LoanSchedule({ loans }: LoanScheduleProps) {
-  const [fullSchedule, setFullSchedule] = useState(true);
+  const [fullSchedule, setFullSchedule] = useState(false);
 
   const { useTerm, paymentType, selectedLoan } = useLoanOptionsContext();
 
@@ -48,11 +51,29 @@ export default function LoanSchedule({ loans }: LoanScheduleProps) {
     return result;
   }, [loans, paymentType, useTerm]);
 
-  if (fullSchedule) {
-    return <FullPayments schedules={schedules} />;
-  } else {
-    return (
-      <SingleLoanTable schedule={schedules.get(selectedLoan?.id ?? 0) ?? []} />
-    );
-  }
+  return (
+    <Box>
+      <Box>
+        <FormControlLabel
+          label="Full Schdule"
+          control={
+            <Switch
+              defaultChecked={fullSchedule}
+              onChange={(e) => {
+                const checked = e.target.checked;
+                setFullSchedule(checked);
+              }}
+            />
+          }
+        />
+      </Box>
+      {fullSchedule ? (
+        <FullPayments schedules={schedules} />
+      ) : (
+        <SingleLoanTable
+          schedule={schedules.get(selectedLoan?.id ?? 0) ?? []}
+        />
+      )}
+    </Box>
+  );
 }
