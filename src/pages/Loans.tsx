@@ -136,6 +136,16 @@ export default function Loans() {
                         >
                           Edit
                         </Button>
+                        <Button
+                          onClick={() => {
+                            if (selectedLoan?.id === loan.id) {
+                              setSelectedLoan(undefined);
+                            }
+                            dispatch({ type: "deleteLoan", value: loan });
+                          }}
+                        >
+                          Delete
+                        </Button>
                       </TableCell>
                     </TableRow>
                   );
@@ -152,7 +162,7 @@ export default function Loans() {
               setModalOpen(null);
             }}
             onSubmit={(data) => {
-              dispatch({ type: "addLoan", value: data });
+              dispatch({ type: "updateLoan", value: data });
             }}
           />
         )}

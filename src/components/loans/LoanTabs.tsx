@@ -6,21 +6,15 @@ import {
   useLoanOptionsContext,
 } from "../../context/LoanOptionsContext";
 import { Loan } from "../../utils/loanReducer";
-import {
-  loanCalculator,
-  loanDashboard,
-  loanSchedule,
-} from "../../utils/routes";
+import { loanDashboard, loanSchedule } from "../../utils/routes";
 import Dropdown, { DropdownItem } from "../Dropdown";
 import NavigationTabs, { NavigationTab } from "../NavigationTabs";
-import LoanCalculator from "./LoanCalculator";
 import LoanChart from "./LoanChart";
 import LoanSchedule from "./LoanSchedule";
 
 const tabs: NavigationTab[] = [
   { label: "Dashboard", route: loanDashboard },
   { label: "Schdule", route: loanSchedule },
-  { label: "Calculator", route: loanCalculator },
 ];
 
 const paymentOptions: DropdownItem<string>[] = [
@@ -69,7 +63,6 @@ export default function LoanTabs({ loans }: LoanTabsProps) {
           <Route path="/" element={<div>loans</div>} />
           <Route path="schedule" element={<LoanSchedule loans={loans} />} />
           <Route path="dashboard" element={<LoanChart loans={loans} />} />
-          <Route path="calculator" element={<LoanCalculator />} />
         </Routes>
       </Grid2>
       <Grid2 xs={12} height="auto">

@@ -66,7 +66,7 @@ export default function FullPayments({ schedules }: FullPaymentsProps) {
         currentInterest: totalInterest,
       };
       results.push(result);
-      if (!hasMoreToPay) {
+      if (!hasMoreToPay || balance === 0) {
         break;
       }
     }
