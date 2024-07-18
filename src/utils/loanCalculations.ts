@@ -22,7 +22,7 @@ export const calculateLoanPayment = ({
   return { monthlyPayment, numberOfPayments, monthlyInterestRate };
 };
 
-type AmortizationScheduleEntry = Readonly<{
+export type AmortizationScheduleEntry = Readonly<{
   month: number;
   payment: number;
   principal: number;

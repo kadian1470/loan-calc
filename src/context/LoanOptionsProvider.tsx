@@ -8,7 +8,6 @@ export const LoanOptionProvider = ({ children }: LoanOptionsProviderProps) => {
   const [paymentType, setPaymentType] = useState<PaymentType>("current");
   const [useTerm, setUseTerm] = useState(false);
   const [selectedLoan, setSelectedLoan] = useState<Loan | undefined>(undefined);
-
   return (
     <LoanOptionContext.Provider
       value={{

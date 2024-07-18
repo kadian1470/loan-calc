@@ -67,7 +67,7 @@ export default function LoanTabs({ loans }: LoanTabsProps) {
         <NavigationTabs tabs={tabs} />
         <Routes>
           <Route path="/" element={<div>loans</div>} />
-          <Route path="schedule" element={<LoanSchedule />} />
+          <Route path="schedule" element={<LoanSchedule loans={loans} />} />
           <Route path="dashboard" element={<LoanChart loans={loans} />} />
           <Route path="calculator" element={<LoanCalculator />} />
         </Routes>
